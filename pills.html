@@ -7,17 +7,24 @@
       .padded-right {margin-right: 10px}
       .padded-right-5 {margin-right: 5px}
       .padded-left-3 {margin-left: 3px}
+      .padded-full-10 {margin: 10px 10px 10px 10px}
       .pointer-cursor {cursor: pointer}
+      .bordered {border:1px solid #cecece}
     </style>
   </head>
 
   <body>
-    <div class="container">
-      <div class="row padded-top">
+    <h1 >Dynamic badges with add/remove controls</h1>
+    <div class="container bordered">
+      <div class="row padded-full-10">
           <div id="roles" class="d-flex flex-row flex-wrap"></div>
           <button id="btnAddRole" class="btn btn-primary btn-sm padded-right-5">+</button>
           <button id="btnCancel" class="btn btn-danger btn-sm">x</button>
       </div>
+    </div>
+    <div class="padded-top"></div>
+    <div class="container bordered">
+      <pre id="exportedData"></pre>
     </div>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
@@ -42,12 +49,23 @@
         var inputValue = inputTarget.children("input[type=text]").val();
         var label = '<span class="badge badge-default text-right padded-right">'+inputValue+'<a class="removeRole padded-left-3 pointer-cursor"><span class="fa fa-times-circle" aria-label="Remove"></span></a></span>';
         inputTarget.html(label);
+        //We need to add the remove role event here since the badge is dynamically created
         $('.badge').on('click', '.removeRole', function(event) {
           $(this).parent().remove();
+          exportRoles();
         });
         $("#btnAddRole").show();
         $("#btnAddRole").focus();
         $("#btnCancel").hide();
+        exportRoles();
+      }
+
+      function exportRoles() {
+        var data = [];
+        $("#roles").find(".badge").each(function(index, badge) {
+          data.push(badge.innerText);
+        });
+        $("#exportedData").html(JSON.stringify({roles: data}));
       }
 
       $(function(){
