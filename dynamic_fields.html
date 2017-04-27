@@ -1,0 +1,81 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <style>
+      body    { padding-top:20px; padding-left: 20px}
+      .padded-top {padding-top: 20px}
+      .padded-left {padding-left: 10px}
+    </style>
+  </head>
+  <body>
+    <button class="btn btn-primary" id="btnAdd">New</button>
+    <div class="padded-top"/>
+    <table id="tblData" class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Email</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+      function add(){
+        var newRow = "<tr>"
+          + "<td><input type='text'/></td>"
+          + "<td><input type='text'/></td>"
+          + "<td><input type='text'/></td>"
+          + "<td><div class='btn-toolbar'><button class='btnSave btn btn-primary btn-sm'>Save</button><button class='btnDelete btn btn-primary btn-sm'>Delete</button></div></td>"
+          + "</tr>";
+        $("#tblData tbody").append(newRow);
+        $(".btnSave").bind("click", save);
+        $(".btnDelete").bind("click", remove);
+      };
+
+      function save(){
+        var par = $(this).parent().parent().parent(); //tr
+        var tdName = par.children("td:nth-child(1)");
+        var tdPhone = par.children("td:nth-child(2)");
+        var tdEmail = par.children("td:nth-child(3)");
+        var tdButtons = par.children("td:nth-child(4)");
+        tdName.html(tdName.children("input[type=text]").val());
+        tdPhone.html(tdPhone.children("input[type=text]").val());
+        tdEmail.html(tdEmail.children("input[type=text]").val());
+        tdButtons.html("<div class='btn-toolbar'><button class='btnDelete btn btn-danger btn-sm'>Delete</button><button class='btnEdit btn btn-success btn-sm'>Edit</button></div>");
+        $(".btnEdit").bind("click", edit);
+        $(".btnDelete").bind("click", remove);
+      };
+
+      function edit(){
+        var par = $(this).parent().parent().parent(); //tr
+        var tdName = par.children("td:nth-child(1)");
+        var tdPhone = par.children("td:nth-child(2)");
+        var tdEmail = par.children("td:nth-child(3)");
+        var tdButtons = par.children("td:nth-child(4)");
+        tdName.html("<input type='text' id='txtName' value='"+tdName.html()+"'/>");
+        tdPhone.html("<input type='text' id='txtPhone' value='"+tdPhone.html()+"'/>");
+        tdEmail.html("<input type='text' id='txtEmail' value='"+tdEmail.html()+"'/>");
+        tdButtons.html("<button class='btnSave btn btn-primary'>Save</button>");
+        $(".btnSave").bind("click", save);
+        $(".btnEdit").bind("click", edit);
+        $(".btnDelete").bind("click", remove);
+      };
+
+      function remove(){
+        var par = $(this).parent().parent(); //tr
+        par.remove();
+      };
+
+      $(function(){
+        $(".btnEdit").bind("click", edit);
+        $(".btnDelete").bind("click", remove);
+        $("#btnAdd").bind("click", add);
+      });
+    </script>
+  </body>
+</html>

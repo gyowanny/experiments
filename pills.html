@@ -1,0 +1,78 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+    <style>
+      body    { padding-top:20px; padding-left: 20px}
+      .padded-top {padding-top: 20px}
+      .padded-right {margin-right: 10px}
+      .padded-right-5 {margin-right: 5px}
+      .padded-left-3 {margin-left: 3px}
+      .pointer-cursor {cursor: pointer}
+    </style>
+  </head>
+  <body>
+
+    <div class="container">
+      <div class="row">
+        <select>
+          <option>Mobile App 1</option>
+          <option>Web app</option>
+          <option>Desktop app</option>
+        </select>
+      </div>
+      <div class="row padded-top">
+          <div id="roles" class="d-flex flex-row flex-wrap"></div>
+          <button id="btnAddRole" class="btn btn-primary btn-sm padded-right-5">+</button>
+          <button id="btnCancel" class="btn btn-danger btn-sm">x</button>
+      </div>
+    </div>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+      function addRole() {
+        var newRoleInput = "<div class='roleValue'><input type='text' class='roleInput padded-right'/></div>";
+        $("#roles").append(newRoleInput);
+        $(".roleInput").focus();
+        $("#btnAddRole").hide();
+        $("#btnCancel").show();
+      }
+
+      function cancelRole() {
+        $(".roleInput").remove();
+        $("#btnAddRole").show();
+        $("#btnAddRole").focus();
+        $("#btnCancel").hide();
+      }
+
+      function saveRole(inputTarget) {
+        var inputValue = inputTarget.children("input[type=text]").val();
+        var label = '<span class="badge badge-default text-right padded-right">'+inputValue+'<a class="removeRole padded-left-3 pointer-cursor"><span class="fa fa-times-circle" aria-label="Remove"></span></a></span>';
+        inputTarget.html(label);
+        $('.badge').on('click', '.removeRole', function(event) {
+          $(this).parent().remove();
+        });
+        $("#btnAddRole").show();
+        $("#btnAddRole").focus();
+        $("#btnCancel").hide();
+      }
+
+      $(function(){
+        $("#btnCancel").hide();
+        $("#btnAddRole").bind("click", addRole);
+        $("#btnCancel").bind("click", cancelRole);
+        $('#roles').on('keypress', '.roleInput', function(event) {
+          if (event.which == 13) {
+            saveRole($(this).parent());
+          }
+        });
+        $('#roles').on('keyup', '.roleInput', function(event) {
+          if (event.keyCode == 27) {
+            cancelRole();
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
